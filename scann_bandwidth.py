@@ -7,6 +7,7 @@ import time
 
 import scann
 
+topK = 10
 
 with tempfile.TemporaryDirectory() as tmp:
     response = requests.get("http://ann-benchmarks.com/glove-100-angular.hdf5")
@@ -28,8 +29,10 @@ normalized_dataset = dataset / np.linalg.norm(dataset, axis=1)[:, np.newaxis]
 # anisotropic quantization as described in the paper; see README
 
 # use scann.scann_ops.build() to instead create a TensorFlow-compatible searcher
-searcher = scann.scann_ops_pybind.builder(normalized_dataset, 10, "dot_product").score_ah(
-    2, anisotropic_quantization_threshold=0.2).build()
+searcher = scann.scann_ops_pybind.builder(normalized_dataset, topK, "dot_product").score_ah(
+    2, anisotropic_quantization_threshold=0.0).build()
+#searcher = scann.scann_ops_pybind.builder(normalized_dataset, topK, "dot_product").score_ah(
+#    2, anisotropic_quantization_threshold=0.2).build()
 
 def compute_recall(neighbors, true_neighbors):
     total = 0
@@ -38,6 +41,21 @@ def compute_recall(neighbors, true_neighbors):
     return total / true_neighbors.size
 
 print("Query shape: {}".format(queries.shape))
+qnum, dim = queries.shape
+print("Batched Search Parallel: ")
+# this will search the top 100 of the 2000 leaves, and compute
+# the exact dot products of the top 100 candidates from asymmetric
+# hashing to get the final top 10 candidates.
+start = time.time()
+neighbors, distances = searcher.search_batched_parallel(queries)
+end = time.time()
+
+# we are given top 100 neighbors in the ground truth, so select top 10
+print("Recall:", compute_recall(neighbors, glove_h5py['neighbors'][:, :topK]))
+print("Time:", end - start)
+print("QPS: ", qnum / (end - start))
+
+print("Batched Search: ")
 # this will search the top 100 of the 2000 leaves, and compute
 # the exact dot products of the top 100 candidates from asymmetric
 # hashing to get the final top 10 candidates.
@@ -46,41 +64,16 @@ neighbors, distances = searcher.search_batched(queries)
 end = time.time()
 
 # we are given top 100 neighbors in the ground truth, so select top 10
-print("Recall:", compute_recall(neighbors, glove_h5py['neighbors'][:, :10]))
+print("Recall:", compute_recall(neighbors, glove_h5py['neighbors'][:, :topK]))
 print("Time:", end - start)
+print("QPS: ", qnum / (end - start))
 
-# increasing the leaves to search increases recall at the cost of speed
-start = time.time()
-neighbors, distances = searcher.search_batched(queries, leaves_to_search=150)
-end = time.time()
-
-print("Recall:", compute_recall(neighbors, glove_h5py['neighbors'][:, :10]))
-print("Time:", end - start)
-
-# increasing reordering (the exact scoring of top AH candidates) has a similar effect.
-start = time.time()
-neighbors, distances = searcher.search_batched(queries, leaves_to_search=150, pre_reorder_num_neighbors=250)
-end = time.time()
-
-print("Recall:", compute_recall(neighbors, glove_h5py['neighbors'][:, :10]))
-print("Time:", end - start)
-
-# we can also dynamically configure the number of neighbors returned
-# currently returns 10 as configued in ScannBuilder()
-start = time.time()
-neighbors, distances = searcher.search_batched(queries)
-print(neighbors.shape, distances.shape)
-end = time.time()
-
-# now returns 20
-neighbors, distances = searcher.search_batched(queries, final_num_neighbors=20)
-print(neighbors.shape, distances.shape)
-
+print("Single-query Search: ")
 # we have been exclusively calling batch search so far; the single-query call has the same API
 start = time.time()
-neighbors, distances = searcher.search(queries[0], final_num_neighbors=5)
+neighbors, distances = searcher.search(queries[0], final_num_neighbors=topK)
 end = time.time()
 
-print(neighbors)
-print(distances)
+#print("Time:", end - start)
 print("Latency (ms):", 1000*(end - start))
+print("QPS: ", 1 / (end - start))
