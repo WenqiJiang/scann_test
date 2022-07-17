@@ -30,7 +30,7 @@ normalized_dataset = dataset / np.linalg.norm(dataset, axis=1)[:, np.newaxis]
 
 # use scann.scann_ops.build() to instead create a TensorFlow-compatible searcher
 searcher = scann.scann_ops_pybind.builder(normalized_dataset, topK, "dot_product").score_ah(
-    2, anisotropic_quantization_threshold=0.0).build()
+    1, anisotropic_quantization_threshold=0.0).build()
 #searcher = scann.scann_ops_pybind.builder(normalized_dataset, topK, "dot_product").score_ah(
 #    2, anisotropic_quantization_threshold=0.2).build()
 
