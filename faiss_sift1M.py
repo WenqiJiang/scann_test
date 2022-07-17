@@ -10,7 +10,11 @@ from multiprocessing.dummy import Pool as ThreadPool
 
 topK          = 100
 dbname        = "SIFT1M"
-index_key     = "PQ32"
+nbytes        = 64
+nbits         = 4
+assert nbytes * 8 % nbits == 0
+m             = int(nbytes * 8 / nbits)
+index_key     = "PQ{}bytes,{}bits".format(nbytes, nbits)
 
 tmpdir = './trained_CPU_indexes/bench_cpu_{}_{}'.format(dbname, index_key)
 
@@ -87,7 +91,7 @@ def get_trained_index():
         tmpdir, dbname, index_key)
 
     if not os.path.exists(filename):
-        index = faiss.index_factory(d, index_key)
+        index = faiss.IndexPQ(d, m, nbits)
 
         # make sure the data is actually in RAM and in float
         index.verbose = True
