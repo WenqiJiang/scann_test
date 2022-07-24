@@ -10,8 +10,8 @@ from multiprocessing.dummy import Pool as ThreadPool
 
 topK          = 100
 dbname        = "SIFT1M"
-nbytes        = 64
-nbits         = 4
+nbytes        = 8
+nbits         = 8
 assert nbytes * 8 % nbits == 0
 m             = int(nbytes * 8 / nbits)
 index_key     = "PQ{}bytes,{}bits".format(nbytes, nbits)
