@@ -1,3 +1,7 @@
+"""
+Fit m, change k-bits to observe the difference
+"""
+
 from __future__ import print_function
 import os
 import sys
@@ -10,13 +14,10 @@ from multiprocessing.dummy import Pool as ThreadPool
 
 topK          = 100
 dbname        = "SIFT1M"
-nbytes        = 16
-nbits         = 4
-assert nbytes * 8 % nbits == 0
-m             = int(nbytes * 8 / nbits)
-index_key     = "PQ{}bytes,{}bits".format(nbytes, nbits)
+m             = 16
+nbits_min     = 5
+nbits_max     = 11
 
-tmpdir = './trained_CPU_indexes/bench_cpu_{}_{}'.format(dbname, index_key)
 
 ### Wenqi: when loading the index, save it to numpy array, default: False
 save_numpy_index = False
@@ -56,10 +57,6 @@ def fvecs_read(fname):
 #################################################################
 
 
-if not os.path.isdir(tmpdir):
-    print("%s does not exist, creating it" % tmpdir)
-    os.mkdir(tmpdir)
-
 
 #################################################################
 # Prepare dataset
@@ -67,17 +64,23 @@ if not os.path.isdir(tmpdir):
 
 
 print("Loading sift1M...", end='', file=sys.stderr)
-xt = fvecs_read("sift/sift_learn.fvecs")
-xb = fvecs_read("sift/sift_base.fvecs")
-xq = fvecs_read("sift/sift_query.fvecs")
+xt = np.array(fvecs_read("sift/sift_learn.fvecs"), dtype='float32')
+xb = np.array(fvecs_read("sift/sift_base.fvecs"), dtype='float32')
+xq = np.array(fvecs_read("sift/sift_query.fvecs"), dtype='float32')
+print('training data', xt.shape)
+print('DB data', xb.shape)
+print('query data', xq.shape)
+
+nt, d = xt.shape
+nq, d = xq.shape
+nb, d = xb.shape
+
 gt = ivecs_read("sift/sift_groundtruth.ivecs")
 print("done", file=sys.stderr)
 
 print("sizes: B %s Q %s T %s gt %s" % (
     xb.shape, xq.shape, xt.shape, gt.shape))
 
-nq, d = xq.shape
-nb, d = xb.shape
 assert gt.shape[0] == nq
 
 
@@ -91,6 +94,7 @@ def get_trained_index():
         tmpdir, dbname, index_key)
 
     if not os.path.exists(filename):
+        print(d, m, nbits)
         index = faiss.IndexPQ(d, m, nbits)
 
         # make sure the data is actually in RAM and in float
@@ -174,25 +178,33 @@ def compute_recall(neighbors, true_neighbors):
 # Perform searches
 #################################################################
 
-index = get_populated_index()
+for nbits in range(nbits_min, nbits_max + 1):
 
-# make sure queries are in RAM
-xq = xq.astype('float32').copy()
+    index_key     = "PQ{}m,{}bits".format(m, nbits)
+    tmpdir = './trained_CPU_indexes/bench_cpu_{}_{}'.format(dbname, index_key)
+    if not os.path.isdir(tmpdir):
+        print("%s does not exist, creating it" % tmpdir)
+        os.mkdir(tmpdir)
 
-# we do queries in a single thread
-#faiss.omp_set_num_threads(1)
-
-print("Searching")
-sys.stdout.flush()
-t0 = time.time()
-D, I = index.search(xq, 100)
-t1 = time.time()
-print("time = %8.3f  sec" % ((t1 - t0)))
-print("QPS = %8.2f  " % (nq/(t1 - t0)))
-
-if topK >= 1:
-    print("R@1:", compute_recall(I[:,:1], gt[:, :1]))
-if topK >=10:
-    print("R@10:", compute_recall(I[:,:10], gt[:, :10]))
-if topK >=100:
-    print("R@100:", compute_recall(I[:,:100], gt[:, :100]))
+    index = get_populated_index()
+    
+    # make sure queries are in RAM
+    xq = xq.astype('float32').copy()
+    
+    # we do queries in a single thread
+    #faiss.omp_set_num_threads(1)
+    
+    print("Searching on {}".format(index_key))
+    sys.stdout.flush()
+    t0 = time.time()
+    D, I = index.search(xq, 100)
+    t1 = time.time()
+    print("time = %8.3f  sec" % ((t1 - t0)))
+    print("QPS = %8.2f  " % (nq/(t1 - t0)))
+    
+    if topK >= 1:
+        print("R@1:", compute_recall(I[:,:1], gt[:, :1]))
+    if topK >=10:
+        print("R@10:", compute_recall(I[:,:10], gt[:, :10]))
+    if topK >=100:
+        print("R@100:", compute_recall(I[:,:100], gt[:, :100]))

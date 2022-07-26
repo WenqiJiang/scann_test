@@ -1,3 +1,8 @@
+"""
+This script handling the case to explore customized bit per vector
+For faiss, d % M == 0, thus I will pad the sift vectors with some zeros to fulfill it.
+"""
+
 from __future__ import print_function
 import os
 import sys
@@ -10,9 +15,8 @@ from multiprocessing.dummy import Pool as ThreadPool
 
 topK          = 100
 dbname        = "SIFT1M"
-nbytes        = 16
-nbits         = 4
-assert nbytes * 8 % nbits == 0
+nbytes        = 32
+nbits         = 8
 m             = int(nbytes * 8 / nbits)
 index_key     = "PQ{}bytes,{}bits".format(nbytes, nbits)
 
@@ -67,17 +71,58 @@ if not os.path.isdir(tmpdir):
 
 
 print("Loading sift1M...", end='', file=sys.stderr)
-xt = fvecs_read("sift/sift_learn.fvecs")
-xb = fvecs_read("sift/sift_base.fvecs")
-xq = fvecs_read("sift/sift_query.fvecs")
+xt = np.array(fvecs_read("sift/sift_learn.fvecs"), dtype='float32')
+xb = np.array(fvecs_read("sift/sift_base.fvecs"), dtype='float32')
+xq = np.array(fvecs_read("sift/sift_query.fvecs"), dtype='float32')
+print('training data', xt.shape)
+print('DB data', xb.shape)
+print('query data', xq.shape)
+
+nt, d = xt.shape
+nq, d = xq.shape
+nb, d = xb.shape
+
+# Way 1: padding (seems this is not the correct way as m increases)
+"""
+if d % m != 0: # padding
+    print('m', m, 'int(d/m)', int(d/m))
+    dim_per_block = int(d / m) + 1
+    min_d = int(m * dim_per_block)
+    print('padding d to {} dim'.format(min_d))
+    xt_new = np.zeros((nt, min_d), dtype='float32')
+    xb_new = np.zeros((nb, min_d), dtype='float32')
+    xq_new = np.zeros((nq, min_d), dtype='float32')
+    xt_new[:,:d] = xt
+    xb_new[:,:d] = xb
+    xq_new[:,:d] = xq
+    xt = xt_new
+    xb = xb_new
+    xq = xq_new
+    d = min_d
+"""
+# Way 2: cut some dimensions
+if d % m != 0: # padding
+    print('m', m, 'int(d/m)', int(d/m))
+    dim_per_block = int(d / m)
+    min_d = int(m * dim_per_block)
+    print('padding d to {} dim'.format(min_d))
+    xt_new = np.zeros((nt, min_d), dtype='float32')
+    xb_new = np.zeros((nb, min_d), dtype='float32')
+    xq_new = np.zeros((nq, min_d), dtype='float32')
+    xt_new = xt[:,:min_d].copy()
+    xb_new = xb[:,:min_d].copy()
+    xq_new = xq[:,:min_d].copy()
+    xt = xt_new
+    xb = xb_new
+    xq = xq_new
+    d = min_d
+
 gt = ivecs_read("sift/sift_groundtruth.ivecs")
 print("done", file=sys.stderr)
 
 print("sizes: B %s Q %s T %s gt %s" % (
     xb.shape, xq.shape, xt.shape, gt.shape))
 
-nq, d = xq.shape
-nb, d = xb.shape
 assert gt.shape[0] == nq
 
 
@@ -91,6 +136,7 @@ def get_trained_index():
         tmpdir, dbname, index_key)
 
     if not os.path.exists(filename):
+        print(d, m, nbits)
         index = faiss.IndexPQ(d, m, nbits)
 
         # make sure the data is actually in RAM and in float
