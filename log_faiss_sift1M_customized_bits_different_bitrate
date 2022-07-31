@@ -2,94 +2,101 @@ training data (100000, 128)
 DB data (1000000, 128)
 query data (10000, 128)
 sizes: B (1000000, 128) Q (10000, 128) T (100000, 128) gt (10000, 100)
-./trained_CPU_indexes/bench_cpu_SIFT1M_PQ16m,5bits does not exist, creating it
-128 16 5
-train done in 0.395 s
-storing ./trained_CPU_indexes/bench_cpu_SIFT1M_PQ16m,5bits/SIFT1M_PQ16m,5bits_trained.index
-add 0:100000, 0.094 s add 100000:200000, 0.204 s add 200000:300000, 0.315 s add 300000:400000, 0.425 s add 400000:500000, 0.535 s add 500000:600000, 0.636 s add 600000:700000, 0.745 s add 700000:800000, 0.835 s add 800000:900000, 0.945 s add 900000:1000000, 1.060 s 
-Add done in 1.080 s
-storing ./trained_CPU_indexes/bench_cpu_SIFT1M_PQ16m,5bits/SIFT1M_PQ16m,5bits_populated.index
-Searching on PQ16m,5bits
-time =   67.224  sec
-QPS =   148.76  
-R@1: 0.237
-R@10: 0.32226
-R@100: 0.420818
-./trained_CPU_indexes/bench_cpu_SIFT1M_PQ16m,6bits does not exist, creating it
-128 16 6
-train done in 0.610 s
-storing ./trained_CPU_indexes/bench_cpu_SIFT1M_PQ16m,6bits/SIFT1M_PQ16m,6bits_trained.index
-add 0:100000, 0.089 s add 100000:200000, 0.217 s add 200000:300000, 0.320 s add 300000:400000, 0.448 s add 400000:500000, 0.575 s add 500000:600000, 0.704 s add 600000:700000, 0.830 s add 700000:800000, 0.955 s add 800000:900000, 1.084 s add 900000:1000000, 1.196 s 
-Add done in 1.236 s
-storing ./trained_CPU_indexes/bench_cpu_SIFT1M_PQ16m,6bits/SIFT1M_PQ16m,6bits_populated.index
-Searching on PQ16m,6bits
-time =   72.804  sec
-QPS =   137.36  
-R@1: 0.3142
-R@10: 0.40661
-R@100: 0.503048
-./trained_CPU_indexes/bench_cpu_SIFT1M_PQ16m,7bits does not exist, creating it
-128 16 7
-train done in 1.353 s
-storing ./trained_CPU_indexes/bench_cpu_SIFT1M_PQ16m,7bits/SIFT1M_PQ16m,7bits_trained.index
-add 0:100000, 0.088 s add 100000:200000, 0.238 s add 200000:300000, 0.398 s add 300000:400000, 0.527 s add 400000:500000, 0.684 s add 500000:600000, 0.802 s add 600000:700000, 0.947 s add 700000:800000, 1.100 s add 800000:900000, 1.254 s add 900000:1000000, 1.407 s 
-Add done in 1.483 s
-storing ./trained_CPU_indexes/bench_cpu_SIFT1M_PQ16m,7bits/SIFT1M_PQ16m,7bits_populated.index
-Searching on PQ16m,7bits
-time =   78.406  sec
-QPS =   127.54  
-R@1: 0.3893
-R@10: 0.48338
-R@100: 0.571223
-./trained_CPU_indexes/bench_cpu_SIFT1M_PQ16m,8bits does not exist, creating it
-128 16 8
-train done in 3.673 s
-storing ./trained_CPU_indexes/bench_cpu_SIFT1M_PQ16m,8bits/SIFT1M_PQ16m,8bits_trained.index
-add 0:100000, 0.088 s add 100000:200000, 0.297 s add 200000:300000, 0.502 s add 300000:400000, 0.709 s add 400000:500000, 0.917 s add 500000:600000, 1.123 s add 600000:700000, 1.319 s add 700000:800000, 1.517 s add 800000:900000, 1.714 s add 900000:1000000, 1.952 s 
-Add done in 2.100 s
-storing ./trained_CPU_indexes/bench_cpu_SIFT1M_PQ16m,8bits/SIFT1M_PQ16m,8bits_populated.index
-Searching on PQ16m,8bits
-time =   12.793  sec
-QPS =   781.70  
-R@1: 0.4462
-R@10: 0.54651
-R@100: 0.629256
-./trained_CPU_indexes/bench_cpu_SIFT1M_PQ16m,9bits does not exist, creating it
-128 16 9
-train done in 9.010 s
-storing ./trained_CPU_indexes/bench_cpu_SIFT1M_PQ16m,9bits/SIFT1M_PQ16m,9bits_trained.index
-add 0:100000, 0.089 s add 100000:200000, 0.436 s add 200000:300000, 0.787 s add 300000:400000, 1.140 s add 400000:500000, 1.502 s add 500000:600000, 1.863 s add 600000:700000, 2.232 s add 700000:800000, 2.574 s add 800000:900000, 2.922 s add 900000:1000000, 3.300 s 
-Add done in 3.594 s
-storing ./trained_CPU_indexes/bench_cpu_SIFT1M_PQ16m,9bits/SIFT1M_PQ16m,9bits_populated.index
-Searching on PQ16m,9bits
-time =   88.785  sec
-QPS =   112.63  
-R@1: 0.5057
-R@10: 0.60319
-R@100: 0.678379
-./trained_CPU_indexes/bench_cpu_SIFT1M_PQ16m,10bits does not exist, creating it
-128 16 10
-train done in 16.860 s
-storing ./trained_CPU_indexes/bench_cpu_SIFT1M_PQ16m,10bits/SIFT1M_PQ16m,10bits_trained.index
-add 0:100000, 0.088 s add 100000:200000, 0.728 s add 200000:300000, 1.382 s add 300000:400000, 2.017 s add 400000:500000, 2.654 s add 500000:600000, 3.310 s add 600000:700000, 3.965 s add 700000:800000, 4.614 s add 800000:900000, 5.251 s add 900000:1000000, 5.910 s 
-Add done in 6.489 s
-storing ./trained_CPU_indexes/bench_cpu_SIFT1M_PQ16m,10bits/SIFT1M_PQ16m,10bits_populated.index
-Searching on PQ16m,10bits
-time =   92.698  sec
-QPS =   107.88  
-R@1: 0.5545
-R@10: 0.64857
-R@100: 0.717706
-./trained_CPU_indexes/bench_cpu_SIFT1M_PQ16m,11bits does not exist, creating it
-128 16 11
-train done in 31.820 s
-storing ./trained_CPU_indexes/bench_cpu_SIFT1M_PQ16m,11bits/SIFT1M_PQ16m,11bits_trained.index
-add 0:100000, 0.088 s add 100000:200000, 1.299 s add 200000:300000, 2.500 s add 300000:400000, 3.713 s add 400000:500000, 4.921 s add 500000:600000, 6.144 s add 600000:700000, 7.346 s add 700000:800000, 8.576 s add 800000:900000, 9.792 s add 900000:1000000, 11.042 s 
-Add done in 12.198 s
-storing ./trained_CPU_indexes/bench_cpu_SIFT1M_PQ16m,11bits/SIFT1M_PQ16m,11bits_populated.index
-Searching on PQ16m,11bits
-time =  105.379  sec
-QPS =    94.90  
-R@1: 0.5963
-R@10: 0.68701
-R@100: 0.749722
+./trained_CPU_indexes/bench_cpu_SIFT1M_PQ32m,5bits does not exist, creating it
+128 32 5
+train done in 0.759 s
+storing ./trained_CPU_indexes/bench_cpu_SIFT1M_PQ32m,5bits/SIFT1M_PQ32m,5bits_trained.index
+add 0:100000, 0.093 s add 100000:200000, 0.183 s add 200000:300000, 0.274 s add 300000:400000, 0.395 s add 400000:500000, 0.519 s add 500000:600000, 0.648 s add 600000:700000, 0.751 s add 700000:800000, 0.871 s add 800000:900000, 0.993 s add 900000:1000000, 1.095 s 
+Add done in 1.128 s
+storing ./trained_CPU_indexes/bench_cpu_SIFT1M_PQ32m,5bits/SIFT1M_PQ32m,5bits_populated.index
+Searching on PQ32m,5bits
+time =  132.474  sec
+QPS =    75.49  
+bandwidth =     1.41  GB/s
+R@1: 0.4165
+R@10: 0.50888
+R@100: 0.589445
+./trained_CPU_indexes/bench_cpu_SIFT1M_PQ32m,6bits does not exist, creating it
+128 32 6
+train done in 1.232 s
+storing ./trained_CPU_indexes/bench_cpu_SIFT1M_PQ32m,6bits/SIFT1M_PQ32m,6bits_trained.index
+add 0:100000, 0.090 s add 100000:200000, 0.211 s add 200000:300000, 0.361 s add 300000:400000, 0.470 s add 400000:500000, 0.621 s add 500000:600000, 0.760 s add 600000:700000, 0.870 s add 700000:800000, 1.009 s add 800000:900000, 1.143 s add 900000:1000000, 1.302 s 
+Add done in 1.366 s
+storing ./trained_CPU_indexes/bench_cpu_SIFT1M_PQ32m,6bits/SIFT1M_PQ32m,6bits_populated.index
+Searching on PQ32m,6bits
+time =  153.193  sec
+QPS =    65.28  
+bandwidth =     1.46  GB/s
+R@1: 0.4906
+R@10: 0.59244
+R@100: 0.665049
+./trained_CPU_indexes/bench_cpu_SIFT1M_PQ32m,7bits does not exist, creating it
+128 32 7
+train done in 2.735 s
+storing ./trained_CPU_indexes/bench_cpu_SIFT1M_PQ32m,7bits/SIFT1M_PQ32m,7bits_trained.index
+add 0:100000, 0.090 s add 100000:200000, 0.272 s add 200000:300000, 0.472 s add 300000:400000, 0.662 s add 400000:500000, 0.860 s add 500000:600000, 1.069 s add 600000:700000, 1.270 s add 700000:800000, 1.450 s add 800000:900000, 1.619 s add 900000:1000000, 1.840 s 
+Add done in 1.961 s
+storing ./trained_CPU_indexes/bench_cpu_SIFT1M_PQ32m,7bits/SIFT1M_PQ32m,7bits_populated.index
+Searching on PQ32m,7bits
+time =  164.298  sec
+QPS =    60.86  
+bandwidth =     1.59  GB/s
+R@1: 0.5681
+R@10: 0.65668
+R@100: 0.721762
+./trained_CPU_indexes/bench_cpu_SIFT1M_PQ32m,8bits does not exist, creating it
+128 32 8
+train done in 7.386 s
+storing ./trained_CPU_indexes/bench_cpu_SIFT1M_PQ32m,8bits/SIFT1M_PQ32m,8bits_trained.index
+add 0:100000, 0.090 s add 100000:200000, 0.380 s add 200000:300000, 0.676 s add 300000:400000, 0.977 s add 400000:500000, 1.261 s add 500000:600000, 1.553 s add 600000:700000, 1.859 s add 700000:800000, 2.165 s add 800000:900000, 2.447 s add 900000:1000000, 2.779 s 
+Add done in 3.013 s
+storing ./trained_CPU_indexes/bench_cpu_SIFT1M_PQ32m,8bits/SIFT1M_PQ32m,8bits_populated.index
+Searching on PQ32m,8bits
+time =   30.030  sec
+QPS =   333.00  
+bandwidth =     9.92  GB/s
+R@1: 0.6286
+R@10: 0.71065
+R@100: 0.76926
+./trained_CPU_indexes/bench_cpu_SIFT1M_PQ32m,9bits does not exist, creating it
+128 32 9
+train done in 18.665 s
+storing ./trained_CPU_indexes/bench_cpu_SIFT1M_PQ32m,9bits/SIFT1M_PQ32m,9bits_trained.index
+add 0:100000, 0.090 s add 100000:200000, 0.597 s add 200000:300000, 1.114 s add 300000:400000, 1.644 s add 400000:500000, 2.172 s add 500000:600000, 2.679 s add 600000:700000, 3.213 s add 700000:800000, 3.715 s add 800000:900000, 4.243 s add 900000:1000000, 4.787 s 
+Add done in 5.247 s
+storing ./trained_CPU_indexes/bench_cpu_SIFT1M_PQ32m,9bits/SIFT1M_PQ32m,9bits_populated.index
+Searching on PQ32m,9bits
+time =  184.153  sec
+QPS =    54.30  
+bandwidth =     1.82  GB/s
+R@1: 0.6789
+R@10: 0.75711
+R@100: 0.807358
+./trained_CPU_indexes/bench_cpu_SIFT1M_PQ32m,10bits does not exist, creating it
+128 32 10
+train done in 35.455 s
+storing ./trained_CPU_indexes/bench_cpu_SIFT1M_PQ32m,10bits/SIFT1M_PQ32m,10bits_trained.index
+add 0:100000, 0.091 s add 100000:200000, 1.043 s add 200000:300000, 2.009 s add 300000:400000, 2.976 s add 400000:500000, 3.942 s add 500000:600000, 4.902 s add 600000:700000, 5.868 s add 700000:800000, 6.849 s add 800000:900000, 7.827 s add 900000:1000000, 8.830 s 
+Add done in 9.739 s
+storing ./trained_CPU_indexes/bench_cpu_SIFT1M_PQ32m,10bits/SIFT1M_PQ32m,10bits_populated.index
+Searching on PQ32m,10bits
+time =  200.028  sec
+QPS =    49.99  
+bandwidth =     1.86  GB/s
+R@1: 0.7257
+R@10: 0.7903
+R@100: 0.837411
+./trained_CPU_indexes/bench_cpu_SIFT1M_PQ32m,11bits does not exist, creating it
+128 32 11
+train done in 67.281 s
+storing ./trained_CPU_indexes/bench_cpu_SIFT1M_PQ32m,11bits/SIFT1M_PQ32m,11bits_trained.index
+add 0:100000, 0.091 s add 100000:200000, 1.944 s add 200000:300000, 3.809 s add 300000:400000, 5.658 s add 400000:500000, 7.501 s add 500000:600000, 9.368 s add 600000:700000, 11.215 s add 700000:800000, 13.059 s add 800000:900000, 14.941 s add 900000:1000000, 16.834 s 
+Add done in 18.637 s
+storing ./trained_CPU_indexes/bench_cpu_SIFT1M_PQ32m,11bits/SIFT1M_PQ32m,11bits_populated.index
+Searching on PQ32m,11bits
+time =  299.753  sec
+QPS =    33.36  
+bandwidth =     1.37  GB/s
+R@1: 0.7611
+R@10: 0.82082
+R@100: 0.862333

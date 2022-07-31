@@ -14,7 +14,7 @@ from multiprocessing.dummy import Pool as ThreadPool
 
 topK          = 100
 dbname        = "SIFT1M"
-m             = 16
+m             = 32
 nbits_min     = 5
 nbits_max     = 11
 
@@ -201,6 +201,8 @@ for nbits in range(nbits_min, nbits_max + 1):
     t1 = time.time()
     print("time = %8.3f  sec" % ((t1 - t0)))
     print("QPS = %8.2f  " % (nq/(t1 - t0)))
+    bandwidth = nq * 1e6 * m * nbits / 8 / (t1 - t0) / (1024 ** 3) # in GB/s
+    print("bandwidth = %8.2f  GB/s" % bandwidth)
     
     if topK >= 1:
         print("R@1:", compute_recall(I[:,:1], gt[:, :1]))
