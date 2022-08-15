@@ -19,14 +19,16 @@ def ivecs_read(fname):
     return a.reshape(-1, d + 1)[:, 1:].copy()
 
 
-def fvecs_read(fname):
-    return ivecs_read(fname).view('float32')
+def mmap_bvecs(fname):
+    x = np.memmap(fname, dtype='uint8', mode='r')
+    d = x[:4].view('int32')[0]
+    return x.reshape(-1, d + 4)[:, 4:]
 
-print("Loading sift1M...", end='', file=sys.stderr)
-xt = fvecs_read("sift/sift_learn.fvecs")
-xb = fvecs_read("sift/sift_base.fvecs")
-xq = fvecs_read("sift/sift_query.fvecs")
-gt = ivecs_read("sift/sift_groundtruth.ivecs")
+print("Loading sift1B...", end='', file=sys.stderr) 
+xb = mmap_bvecs('/data/bigann/bigann_base.bvecs')
+xq = mmap_bvecs('/data/bigann/bigann_query.bvecs')
+xt = mmap_bvecs('/data/bigann/bigann_learn.bvecs')
+gt = ivecs_read('/data/bigann/gnd/idx_1000M.ivecs')
 print("done", file=sys.stderr)
 
 print("sizes: B %s Q %s T %s gt %s" % (
@@ -35,22 +37,24 @@ print("sizes: B %s Q %s T %s gt %s" % (
 nq, d = xq.shape
 nb, d = xb.shape
 assert gt.shape[0] == nq
+assert nb = int(1e9)
 
 # normalized_dataset = dataset / np.linalg.norm(dataset, axis=1)[:, np.newaxis]
 # configure ScaNN as a tree - asymmetric hash hybrid with reordering
 # anisotropic quantization as described in the paper; see README
 
-nlist = 1024 # number of clusters
+nlist = 32768 # number of clusters
 nprobe = 32
-N_bytes = 16 # bytes per quantized vector
+N_bytes = 32 # bytes per quantized vector
 assert d % (2 * N_bytes) == 0
 dim_per_4bit_PQ = int(d / (2 * N_bytes))
 
 index_parent_dir = './scann_indexes'
-index_name = 'SIFT1M_IVF{},PQ{}'.format(nlist, N_bytes)
+index_name = 'SIFT1B_IVF{},PQ{}'.format(nlist, N_bytes)
 index_path = os.path.join(index_parent_dir, index_name)
 
-training_sample_size = int(1e5)
+training_sample_size = n_train = max(256 * 1000, 100 * nlist) # same as Faiss
+
 if not os.path.exists(index_path):
     os.mkdir(index_path)
     # use scann.scann_ops.build() to instead create a TensorFlow-compatible searcher
